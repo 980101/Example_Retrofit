@@ -1,6 +1,10 @@
 package com.example.exampleretrofit.retrofit
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
+import com.example.exampleretrofit.App
 import com.example.exampleretrofit.utils.API
 import com.example.exampleretrofit.utils.Constants.TAG
 import com.example.exampleretrofit.utils.isJsonArray
@@ -72,7 +76,18 @@ object RetrofitClient {
                     .method(originalRequest.method, originalRequest.body)
                     .build()
 
-                return chain.proceed(finalRequest)
+                val response = chain.proceed(finalRequest)
+
+                if (response.code != 200) {
+
+                    // 메인 스레드에서 실행되도록 설정
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(App.instance, "${response.code} 에러 입니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                return response
             }
 
         })

@@ -1,12 +1,14 @@
 package com.example.exampleretrofit.retrofit
 
 import android.util.Log
+import com.example.exampleretrofit.model.Photo
 import com.example.exampleretrofit.utils.API.BASE_URL
 import com.example.exampleretrofit.utils.Constants.TAG
 import com.example.exampleretrofit.utils.RESPONSE_STATE
 import com.google.gson.JsonElement
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
 
 class RetrofitManager {
     companion object {
@@ -17,7 +19,7 @@ class RetrofitManager {
     private val iRetrofit: IRetrofit? = RetrofitClient.getClient(BASE_URL)?.create(IRetrofit::class.java)
 
     // 사진 검색 api 호출
-    fun searchPhotos(searchTerm: String?, completion: (RESPONSE_STATE, String) -> Unit) {
+    fun searchPhotos(searchTerm: String?, completion: (RESPONSE_STATE, ArrayList<Photo>?) -> Unit) {
 
         val term = searchTerm ?: ""
 
@@ -38,15 +40,55 @@ class RetrofitManager {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                 Log.d(TAG, "RetrofitManager - onResponse() called / response : ${response.body()}")
 
-                // 값과 이벤트를 같이 넘겨준다.
-                completion(RESPONSE_STATE.OKAY, response.body().toString())
+                when(response.code()) {
+                    200 -> {
+
+                        response.body()?.let {  // body에 값이 있다면 실행
+
+                            var parsedPhotoDataArray = ArrayList<Photo>()
+                            val body = it.asJsonObject
+                            val results = body.getAsJsonArray("results")
+
+                            val total = body.get("total").asInt
+
+                            results.forEach{ resultItem ->
+                                val resultItemObject = resultItem.asJsonObject
+
+                                val user = resultItemObject.get("user").asJsonObject
+                                val username: String = user.get("username").asString
+                                val likesCount = resultItemObject.get("likes").asInt
+                                val thumbnailLink = resultItemObject.get("urls").asJsonObject.get("thumb").asString
+                                val createAt = resultItemObject.get("created_at").asString
+
+                                // 날짜 데이터 수정
+                                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                                val formatter = SimpleDateFormat("yyyy년\nMM월 dd일")
+                                val outputDateString = formatter.format(parser.parse(createAt))
+
+//                                Log.d(TAG, "RetrofitManager - outputDateString : $outputDateString")
+
+                                val photoItem = Photo(
+                                    thumbnail = thumbnailLink,
+                                    author = username,
+                                    createAt = outputDateString,
+                                    likesCount = likesCount
+                                )
+
+                                parsedPhotoDataArray.add(photoItem)
+                            }
+                            // 값과 이벤트를 같이 넘겨준다.
+                            completion(RESPONSE_STATE.OKAY, parsedPhotoDataArray)
+                        }
+                    }
+                }
+
             }
 
             // 응답에 실패했을 때 호출
             override fun onFailure(call: Call<JsonElement>, t: Throwable) {
                 Log.d(TAG, "RetrofitManager - onFailure() called / t: $t")
 
-                completion(RESPONSE_STATE.FAIL, t.toString())
+                completion(RESPONSE_STATE.FAIL, null)
             }
 
         })
