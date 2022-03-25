@@ -13,12 +13,13 @@
         app:liftOnScrollTargetViewId="@id/my_photo_recycler_view">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="사진검색"
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/ic_baseline_menu_24"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             />
 

@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.exampleretrofit.retrofit.RetrofitManager
 import com.example.exampleretrofit.utils.Constants.TAG
-import com.example.exampleretrofit.utils.RESPONSE_STATE
+import com.example.exampleretrofit.utils.RESPONSE_STATUS
 import com.example.exampleretrofit.utils.SEARCH_TYPE
 import com.example.exampleretrofit.utils.onMyTextChanged
 import kotlinx.android.synthetic.main.activity_main.*
@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity() {
         btn_search.setOnClickListener {
             Log.d(TAG, "MainActivity - 검색 버튼이 클릭되었다. / currentSearchType : $currentSearchType")
 
+            this.handleSearchButtonUi()
+
             val userSearchInput = search_term_edit_text.text.toString()
 
             // 검색 api 호출
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 responseState, responseDataArrayList ->
 
                 when(responseState) {
-                    RESPONSE_STATE.OKAY -> {
+                    RESPONSE_STATUS.OKAY -> {
                         Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
 
                         val intent = Intent(this, PhotoCollectionActivity::class.java)
@@ -97,14 +99,18 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra("search_term", userSearchInput)
                         startActivity(intent)
                     }
-                    RESPONSE_STATE.FAIL -> {
+                    RESPONSE_STATUS.FAIL -> {
                         Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "api 호출 실패 : $responseDataArrayList")
                    }
+                    RESPONSE_STATUS.NO_CONTENTS -> {
+                        Toast.makeText(this, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
-
-            this.handleSearchButtonUi()
+            btn_progress.visibility = View.INVISIBLE
+            btn_search.text = "검색"
+            search_term_edit_text.setText("")
         }
     } // onCreate
 
@@ -114,10 +120,10 @@ class MainActivity : AppCompatActivity() {
 
         btn_search.text = ""
 
-        Handler().postDelayed({
-            btn_progress.visibility = View.INVISIBLE
-            btn_search.text = "검색"
-        }, 1500)
+//        Handler().postDelayed({
+//            btn_progress.visibility = View.INVISIBLE
+//            btn_search.text = "검색"
+//        }, 1500)
 
     }
 
