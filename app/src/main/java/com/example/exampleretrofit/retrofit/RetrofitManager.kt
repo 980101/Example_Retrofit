@@ -23,7 +23,7 @@ class RetrofitManager {
 
         val term = searchTerm ?: ""
 
-        val call: Call<JsonElement> = iRetrofit?.searchPhotos(searchTerm = term) ?: return
+        val call: Call<JsonElement> = iRetrofit?.searchPhotos(searchTerm = term, size = "20") ?: return
 
 //        위와 같은 기능을 하는 코드
 //        val term = searchTerm.let {
