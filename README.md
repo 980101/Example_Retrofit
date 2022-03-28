@@ -21,5 +21,5 @@ Retrofit을 사용하여 API 통신을 해보자!
 <img src="https://user-images.githubusercontent.com/47620950/160240939-0638b9bf-f7db-4542-b623-dc1065c63ae3.png" width="300">
 
 ## Update Plan 📃
-- [ ] 검색 결과 중, 2 page 분량의 데이터를 출력하기
+- [x] 검색 결과 중, 2 page 분량의 데이터를 출력하기
 - [ ] 사용자 검색을 선택한 경우의 기능 구현
