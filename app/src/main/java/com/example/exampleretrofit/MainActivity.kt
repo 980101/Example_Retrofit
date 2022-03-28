@@ -82,32 +82,56 @@ class MainActivity : AppCompatActivity() {
             val userSearchInput = search_term_edit_text.text.toString()
 
             // 검색 api 호출
-            RetrofitManager.instance.searchPhotos(searchTerm = search_term_edit_text.text.toString(), completion = {
-                responseState, responseDataArrayList ->
+            when(currentSearchType) {
+                SEARCH_TYPE.PHOTO -> {
+                    RetrofitManager.instance.searchPhotos(searchTerm = search_term_edit_text.text.toString(), completion = {
+                            responseState, responseDataArrayList ->
 
-                when(responseState) {
-                    RESPONSE_STATUS.OKAY -> {
-                        Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
+                        when(responseState) {
+                            RESPONSE_STATUS.OKAY -> {
+                                Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
 
-                        val intent = Intent(this, PhotoCollectionActivity::class.java)
+                                val intent = Intent(this, PhotoCollectionActivity::class.java)
 
-                        val bundle = Bundle()
+                                val bundle = Bundle()
 
-                        // 직렬화 방식으로 데이터를 축소
-                        bundle.putSerializable("photo_array_list", responseDataArrayList)
-                        intent.putExtra("array_bundle", bundle)
-                        intent.putExtra("search_term", userSearchInput)
-                        startActivity(intent)
-                    }
-                    RESPONSE_STATUS.FAIL -> {
-                        Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
-                        Log.d(TAG, "api 호출 실패 : $responseDataArrayList")
-                   }
-                    RESPONSE_STATUS.NO_CONTENTS -> {
-                        Toast.makeText(this, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show()
-                    }
+                                // 직렬화 방식으로 데이터를 축소
+                                bundle.putSerializable("photo_array_list", responseDataArrayList)
+                                intent.putExtra("array_bundle", bundle)
+                                intent.putExtra("search_term", userSearchInput)
+                                startActivity(intent)
+                            }
+                            RESPONSE_STATUS.FAIL -> {
+                                Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
+                                Log.d(TAG, "api 호출 실패 : $responseDataArrayList")
+                            }
+                            RESPONSE_STATUS.NO_CONTENTS -> {
+                                Toast.makeText(this, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
                 }
-            })
+
+                SEARCH_TYPE.USER -> {
+                    RetrofitManager.instance.searchUsers(searchTerm = search_term_edit_text.text.toString(), completion = {
+                            responseState, responseDataArrayList ->
+
+                        when(responseState) {
+                            RESPONSE_STATUS.OKAY -> {
+                                Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
+                            }
+                            RESPONSE_STATUS.FAIL -> {
+                                Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
+                                Log.d(TAG, "api 호출 실패 : $responseDataArrayList")
+                            }
+                            RESPONSE_STATUS.NO_CONTENTS -> {
+                                Toast.makeText(this, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
+                }
+            }
+
             btn_progress.visibility = View.INVISIBLE
             btn_search.text = "검색"
             search_term_edit_text.setText("")

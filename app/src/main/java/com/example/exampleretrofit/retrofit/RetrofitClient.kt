@@ -9,7 +9,6 @@ import com.example.exampleretrofit.utils.API
 import com.example.exampleretrofit.utils.Constants.TAG
 import com.example.exampleretrofit.utils.isJsonArray
 import com.example.exampleretrofit.utils.isJsonObject
-import com.google.gson.JsonObject
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
