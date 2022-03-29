@@ -2,7 +2,6 @@ package com.example.exampleretrofit
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.GridLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exampleretrofit.model.Photo

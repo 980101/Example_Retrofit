@@ -118,6 +118,7 @@ class RetrofitManager {
                 when(response.code()) {
                     200 -> {
                         response.body()?.let {
+
                             var parsedUserDataArray = ArrayList<User>()
 
                             val body = it.asJsonObject

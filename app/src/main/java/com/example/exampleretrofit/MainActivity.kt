@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
                         when(responseState) {
                             RESPONSE_STATUS.OKAY -> {
-                                Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
+//                                Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
 
                                 val intent = Intent(this, PhotoCollectionActivity::class.java)
 
@@ -119,6 +119,16 @@ class MainActivity : AppCompatActivity() {
                         when(responseState) {
                             RESPONSE_STATUS.OKAY -> {
                                 Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
+
+                                val intent = Intent(this, UserCollectionActivity::class.java)
+
+                                val bundle = Bundle()
+
+                                // 직렬화 방식으로 데이터를 축소
+                                bundle.putSerializable("user_array_list", responseDataArrayList)
+                                intent.putExtra("array_bundle", bundle)
+                                intent.putExtra("search_term", userSearchInput)
+                                startActivity(intent)
                             }
                             RESPONSE_STATUS.FAIL -> {
                                 Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()

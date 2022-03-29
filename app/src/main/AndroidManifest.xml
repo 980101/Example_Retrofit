@@ -16,6 +16,9 @@
             android:name=".PhotoCollectionActivity"
             android:exported="true" />
         <activity
+            android:name=".UserCollectionActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
