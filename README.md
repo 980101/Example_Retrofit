@@ -16,10 +16,15 @@ Retrofit을 사용하여 API 통신을 해보자!
 
 <img src="https://user-images.githubusercontent.com/47620950/160240870-7a47d0dd-c1d8-4adf-a4dc-aafcfd7770db.png" width="300">
 
-◻ 검색결과
+◻ 검색결과 (사진)
 
 <img src="https://user-images.githubusercontent.com/47620950/160240939-0638b9bf-f7db-4542-b623-dc1065c63ae3.png" width="300">
 
-## Update Plan 📃
+◻ 검색결과 (사용자)
+
+<img src="https://user-images.githubusercontent.com/47620950/160797459-cc882411-4ec7-4841-a8c6-4e2f7445b548.png" width="300">
+
+
+## Update Plans 📃
 - [x] 검색 결과 중, 2 page 분량의 데이터를 출력하기
-- [ ] 사용자 검색을 선택한 경우의 기능 구현
+- [x] 사용자 검색을 선택한 경우의 기능 구현
