@@ -133,9 +133,9 @@ class RetrofitManager {
                                     val resultItemObject = resultItem.asJsonObject
 
                                     val name = resultItemObject.get("name").asString
-                                    val nickName = resultItemObject.get("username").asString
+                                    val nickName = "@" + resultItemObject.get("username").asString
                                     val profile =
-                                        resultItemObject.get("profile_image").asJsonObject.get("small").asString
+                                        resultItemObject.get("profile_image").asJsonObject.get("large").asString
 
                                     val userItem = User(
                                         name = name,
